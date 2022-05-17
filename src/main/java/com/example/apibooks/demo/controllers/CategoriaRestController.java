@@ -23,7 +23,7 @@ public class CategoriaRestController {
 	private ICategoriaService service;
 	
 	@GetMapping("/categorias")
-	public ResponseEntity<CategoriaResponseRest> consultaCat() {
+	public ResponseEntity<CategoriaResponseRest> consultaCate() {
 		
 		ResponseEntity<CategoriaResponseRest> response = service.buscarCategorias();
 		return response;
