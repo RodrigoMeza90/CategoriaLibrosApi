@@ -10,4 +10,6 @@ public interface ILibroService {
 	public ResponseEntity <LibroResponseRest> buscarLibro();
 	public ResponseEntity <LibroResponseRest> buscarLibroPorId(Long id);
 	public ResponseEntity <LibroResponseRest> guardarLibro(Libro libro);
+	public ResponseEntity <LibroResponseRest> actualizar(Libro libro, Long id);
+	public ResponseEntity <LibroResponseRest> eliminar(Long id);
 }

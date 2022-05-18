@@ -87,6 +87,7 @@ public class LibroServiceIpm implements ILibroService {
 	}
 
 	@Override
+	@Transactional
 	public ResponseEntity<LibroResponseRest> guardarLibro(Libro libro) {
 		
 		log.info("Inicio metodo guardarLibro");
@@ -115,6 +116,63 @@ public class LibroServiceIpm implements ILibroService {
 		}
 		
 		response.setMetadata("Respuesta OK", "00", "Libro guardado");
+		return new ResponseEntity<LibroResponseRest>(response, HttpStatus.OK);
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<LibroResponseRest> actualizar(Libro libro, Long id) {
+		log.info("Inicio metodo actualizar libro");
+		LibroResponseRest response = new LibroResponseRest();
+		List<Libro> list = new ArrayList<>();
+		
+		try {
+			Optional<Libro> libroBuscado = libroDao.findById(id);
+			
+			if (libroBuscado.isPresent()) {
+				libroBuscado.get().setNombre(libro.getNombre());
+				libroBuscado.get().setDescripcion(libro.getDescripcion());
+				
+				Libro libroActualizar = libroDao.save(libroBuscado.get());
+				
+				if(libroActualizar != null) {
+					response.setMetadata("Respuesta ok", "00", "libro actualizado");
+					list.add(libroActualizar);
+					response.getLibroResponse().setLibro(list);
+				}else {
+					log.error("Error en actualizar libro");
+					response.setMetadata("Respuesta no ok", "-1", "libro no actualizado");
+					return new ResponseEntity<LibroResponseRest>(response, HttpStatus.NOT_FOUND);
+				}
+			}
+		
+		}catch (Exception e) {
+			log.error("Error en actualizar libro");
+			e.getStackTrace();
+			response.setMetadata("Respuesta no ok", "-1", "error en actualizar libro");
+			return new ResponseEntity<LibroResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<LibroResponseRest>(response, HttpStatus.OK);
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<LibroResponseRest> eliminar(Long id) {
+		log.info("Inicio metodo eliminar libro");
+		LibroResponseRest response = new LibroResponseRest();
+		
+		
+		try {
+			libroDao.deleteById(id);
+			response.setMetadata("Respuesta ok", "00", "libro eliminado");
+			
+			
+		}catch(Exception e){
+			log.error("Error en eliminar libro");
+			e.getStackTrace();
+			response.setMetadata("Respuesta no ok", "-1", "error en eliminar libro");
+			return new ResponseEntity<LibroResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		return new ResponseEntity<LibroResponseRest>(response, HttpStatus.OK);
 	}
 	
