@@ -33,7 +33,7 @@ public class UsuarioService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		
-		Usuario usuario = this.usuarioDao.findByUsuario(username);
+		Usuario usuario = this.usuarioDao.findByNombreUsuario(username);
 		
 		if(usuario == null) {
 			log.error("Error, El usuario no existe");

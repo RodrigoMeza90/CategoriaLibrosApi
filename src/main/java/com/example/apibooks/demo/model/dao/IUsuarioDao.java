@@ -7,7 +7,7 @@ import com.example.apibooks.demo.model.Usuario;
 
 public interface IUsuarioDao extends CrudRepository<Usuario, Long >{
 	
-	public Usuario findByUsuario(String nombreUsuario);
+	public Usuario findByNombreUsuario(String nombreUsuario);
 	
 	@Query("select u from Usuario u where u.nombreUsuario=?1")
 	public Usuario findByIdNombreUsuarioV2(String nombreUsario);
